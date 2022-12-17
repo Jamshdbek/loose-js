@@ -10,7 +10,7 @@ export default (req, res, next) => {
             next();
 
         } catch (error) {
-            res.status(403).json({ message: "token  wrong" })
+            res.status(403).json({ message: "token  wrong." })
         }
     }
     else {
