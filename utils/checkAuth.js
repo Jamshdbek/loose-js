@@ -5,8 +5,8 @@ export default (req, res, next) => {
     const token =( req.headers.authorization || '' ).replace(/Bearer\s?/, '');
     if (token) {
         try {
-            const dec = jwt.verify(token, 'secret');
-            req.userId = dec._id
+            // const dec = jwt.verify(token, 'secret');
+            // req.userId = dec._id
             next();
 
         } catch (error) {

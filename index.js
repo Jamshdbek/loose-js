@@ -4,8 +4,9 @@ import multer from "multer";
 import { postCreateValidation, registerValidation } from './validations/auth.js';
 import dotenv from 'dotenv'
 import checkAuth from "./utils/checkAuth.js";
-import { createPost, getOne, getPosts, remove, update } from "./controllers/postController.js";
+import {  createPost, getOne, getPosts, remove, update } from "./controllers/postController.js";
 import { login, register, userInfo } from "./controllers/userController.js"
+import { addPortal } from "./controllers/portalController.js";
 
 // dotenv 
 dotenv.config()
@@ -32,18 +33,21 @@ const uploads = multer({ storage })
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.HOST_TOKEN).then(() => {console.log('mongoose connected')}).catch((err) => console.log(err.mongoose))
 
-
+// test *
+app.get('/hello', (req, res, next) => {
+    res.json(["Tony", "Lisa", "Michael", "Ginger", "Food"]);
+})
 // login ****************************************
 app.post('/auth/login', login)
 // register ***************************************
 app.post('/auth/register', registerValidation, register)
 // usr info ************************************
 app.get('/auth/me', checkAuth, userInfo)
-
 // post ********************************
+app.post('/portal', addPortal)
 app.get('/posts', getPosts)
 app.get('/posts/:id', getOne)
-app.post('/posts', checkAuth, postCreateValidation, createPost)
+app.post('/posts',  postCreateValidation, createPost)
 app.delete('/posts/:id', checkAuth, remove)
 app.patch('/update/:id', checkAuth, update)
 

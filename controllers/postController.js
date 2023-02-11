@@ -16,23 +16,23 @@ export const getOne = async (req, res) => {
         postModule.findOneAndUpdate({
             _id: postId
         },
-        {
-            $inc: { viewsCunt: 1 }
-        },
-        {
-         returnDocument:'after'
+            {
+                $inc: { viewsCunt: 1 }
+            },
+            {
+                returnDocument: 'after'
             },
             (err, doc) => {
                 if (err) {
                     console.log(err)
-                    return res.status(500).json({message:"problem update post"})
+                    return res.status(500).json({ message: "problem update post" })
                 }
                 if (!doc) {
                     return res.status(404).json({ message: "document not found" })
 
                 }
                 res.status(200).json(doc)
-        }
+            }
         )
 
     } catch (error) {
@@ -40,18 +40,20 @@ export const getOne = async (req, res) => {
         res.status(500).json({ message: "problem get posts" })
     }
 }
+
+
 export const createPost = async (req, res) => {
 
     try {
-        const userId = req.body.user
-        const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(userId, salt)
-        const doc = await  postModule.create({
+        // const userId = req.body.user
+        // const salt = await bcrypt.genSalt(10)
+        // const hash = await bcrypt.hash(userId, salt)
+        const doc = await postModule.create({
             title: req.body.title,
             text: req.body.text,
             blog: req.body.blog,
-            imageUrl: req.body.imageUrl,
-            user: hash
+            imageUrl: req.body.imageUrl
+
         })
         const post = await doc.save()
         res.json(post)
@@ -65,17 +67,17 @@ export const remove = async (req, res) => {
     try {
         const postId = await req.params.id
         postModule.findOneAndDelete({
-           _id: postId
+            _id: postId
         }, (err, doc) => {
             if (err) {
                 console.log(err)
-                return res.status(500).json({message:"problem deleting"}) 
+                return res.status(500).json({ message: "problem deleting" })
             }
             if (!doc) {
-                return res.status(404).json({message:"problem not found"})
+                return res.status(404).json({ message: "problem not found" })
             }
-            res.json({success:true})
-       })
+            res.json({ success: true })
+        })
 
     } catch (error) {
         console.log(error)
@@ -93,7 +95,7 @@ export const update = async (req, res) => {
                 text: req.body.text,
                 blog: req.body.blog,
                 imageUrl: req.body.imageUrl
-            },  (err, docs) => {
+            }, (err, docs) => {
                 if (err) {
                     console.log(err)
                 }
@@ -101,9 +103,9 @@ export const update = async (req, res) => {
                     console.log("Updated Docs : ", docs);
                 }
             })
-        res.json({ success:true})
+        res.json({ success: true })
     } catch (error) {
         console.log(error)
-        res.status(500).json({message:"problem updating "})
+        res.status(500).json({ message: "problem updating " })
     }
 }
